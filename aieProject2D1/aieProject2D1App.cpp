@@ -5,13 +5,14 @@
 #include "Input.h"
 #include <Gizmos.h>
 #include <glm\ext.hpp>
-#include <glm\vec2.hpp>
-#include <glm\vec4.hpp>
+#include <glm\glm.hpp>
 #include "Sphere.h"
+#include "gl_core_4_4.h"
+#include "imgui.h"
 
 aieProject2D1App::aieProject2D1App() 
 {
-
+	m_v4ClearColor = glm::vec4(1,1,1,1);
 }
 
 aieProject2D1App::~aieProject2D1App() 
@@ -69,6 +70,11 @@ void aieProject2D1App::shutdown()
 
 void aieProject2D1App::update(float deltaTime) 
 {
+	ImGui::ColorEdit3("clear colour", glm::value_ptr(m_v4ClearColor));
+
+	// clear the OpenGL backbuffer in preparation for rendering
+	glClearColor(m_v4ClearColor.r, m_v4ClearColor.g, m_v4ClearColor.b, 1);
+
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 

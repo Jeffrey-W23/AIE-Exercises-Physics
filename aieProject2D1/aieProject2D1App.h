@@ -31,4 +31,7 @@ protected:
 
 	// Physics Scene pointer
 	PhysicsScene* m_physicsScene;
+
+
+	glm::vec4 m_v4ClearColor;
 };
