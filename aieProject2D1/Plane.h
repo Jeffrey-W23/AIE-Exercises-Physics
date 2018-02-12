@@ -13,11 +13,13 @@ public:
 	virtual void MakeGizmo(); 
 	virtual void ResetPosition();
 
+	glm::vec2 getCentre() { return m_centrePoint; }
 	glm::vec2 getNormal() { return m_normal; } 
 	float getDistance() { return m_distanceToOrigin; }
 
 protected: 
-	glm::vec2 m_normal; 
+	glm::vec2 m_normal;
+	glm::vec2 m_centrePoint;
 	float m_distanceToOrigin;
 };
 

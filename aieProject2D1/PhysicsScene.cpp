@@ -6,6 +6,8 @@
 #include <list>
 #include <iostream>
 #include "Sphere.h"
+#include "Plane.h"
+#include "Box.h"
 #include <glm\ext.hpp>
 #include <glm\glm.hpp>
 
@@ -210,7 +212,7 @@ bool PhysicsScene::sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
 		if (glm::length(distance) <= TotalRad)
 		{
 			sphere1->SetVelocity(glm::vec2(0,0));
-			sphere2->SetVelocity(glm::vec2(0, 0));
+			sphere2->SetVelocity(glm::vec2(0,0));
 
 			return true;
 		}
@@ -219,4 +221,125 @@ bool PhysicsScene::sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
 	return false;
 }
 
+bool PhysicsScene::plane2Plane(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	// Return to this later and finish.
+	return false;
+}
 
+bool PhysicsScene::plane2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	return (sphere2Plane(obj2, obj1));
+}
+
+bool PhysicsScene::sphere2Plane(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	Sphere* sphere = dynamic_cast<Sphere*>(obj1);
+	Plane* plane = dynamic_cast<Plane*>(obj2);
+
+	if (sphere != nullptr && plane != nullptr)
+	{
+		glm::vec2 collisionNormal = plane->getNormal();
+		float sphereToPlane = glm::dot(sphere->GetPosition(), plane->getNormal()) - plane->getDistance();
+
+		if (sphereToPlane < 0)
+		{
+			collisionNormal *= -1;
+			sphereToPlane *= -1;
+		}
+
+		float intersection = sphere->GetRadius() - sphereToPlane;
+
+		if (intersection > 0)
+		{
+			sphere->SetVelocity(glm::vec2(0, 0));
+			
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool PhysicsScene::plane2Box(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	Plane* plane = dynamic_cast<Plane*>(obj1);
+	Box* box = dynamic_cast<Box*>(obj2);
+
+	if (plane != nullptr || box != nullptr)
+	{
+		glm::vec2 v = box->GetPosition() - plane->getCentre();
+		glm::vec2 halfWidth = box->GetPosition() + glm::vec2(box->getWidth() * 0.5f, box->getHeight());
+		glm::vec2 halfHeight = box->GetPosition() + glm::vec2(box->getWidth(), box->getHeight() * 0.5f);
+
+		if (glm::length(v) < glm::length(halfWidth) || glm::length(v) < glm::length(halfHeight))
+		{
+			box->SetVelocity(glm::vec2(0, 0));
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool PhysicsScene::sphere2Box(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	Sphere* sphere = dynamic_cast<Sphere*>(obj1);
+	Box* box = dynamic_cast<Box*>(obj2);
+
+	if (sphere != nullptr && box != nullptr)
+	{
+		glm::vec2 a = glm::clamp(sphere->GetPosition(), box->getMin(), box->getMax());
+		glm::vec2 v = a - sphere->GetPosition();
+
+		if (glm::length(v) <= sphere->GetRadius())
+		{
+			sphere->SetVelocity(glm::vec2(0, 0));
+			box->SetVelocity(glm::vec2(0, 0));
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool PhysicsScene::box2Plane(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	return (plane2Box(obj2, obj1));
+}
+
+bool PhysicsScene::box2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	return (sphere2Box(obj2, obj1));
+}
+
+bool PhysicsScene::box2Box(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	Box* box1 = dynamic_cast<Box*>(obj1);
+	Box* box2 = dynamic_cast<Box*>(obj2);
+
+	if (box1 != nullptr && box2 != nullptr)
+	{
+		glm::vec2 min1 = box1->getMin();
+		glm::vec2 max1 = box1->getMax();
+
+		glm::vec2 min2 = box2->getMin();
+		glm::vec2 max2 = box2->getMax();
+
+		if (max1.x < min2.x || max2.x < min1.x || max1.y < min2.y || max2.y < min1.y)
+		{
+			return false;
+		}
+		else
+		{
+			box1->SetVelocity(glm::vec2(0, 0));
+			box2->SetVelocity(glm::vec2(0, 0));
+
+			return true;
+		}
+	}
+
+	return false;
+}
