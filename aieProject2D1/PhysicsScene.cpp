@@ -5,6 +5,18 @@
 #include <iostream> 
 #include <list>
 #include <iostream>
+#include "Sphere.h"
+#include <glm\ext.hpp>
+#include <glm\glm.hpp>
+
+// function pointer array for doing our collisions 
+typedef bool(*fn)(PhysicsObject*, PhysicsObject*);
+
+static fn collisionFunctionArray[] = { 
+	PhysicsScene::plane2Plane, PhysicsScene::plane2Sphere, PhysicsScene::plane2Box, 
+	PhysicsScene::sphere2Sphere, PhysicsScene::sphere2Plane, PhysicsScene::sphere2Box, 
+	PhysicsScene::box2Plane, PhysicsScene::box2Sphere, PhysicsScene::box2Box,
+}; 
 
 //--------------------------------------------------------------------------------------
 // Default Constructor.
@@ -61,7 +73,8 @@ void PhysicsScene::Update(float dt)
 
 
 
-	static std::list<PhysicsObject*> dirty;
+	static std::list<PhysicsObject*> dirty;
+
 
 
 
@@ -83,6 +96,8 @@ void PhysicsScene::Update(float dt)
 			pActor->FixedUpdate(m_v2Gravity, m_fTimeStep);
 		}
 
+		checkForCollision();
+
 		// update accumulated time by the time step
 		fAccumulatedTime -= m_fTimeStep;
 
@@ -93,7 +108,7 @@ void PhysicsScene::Update(float dt)
 
 		// check for collisions (ideally you'd want to have some sort of
 		// scene management in place)
-		for (auto pActor : m_apActors) 
+		/*for (auto pActor : m_apActors) 
 		{
 			for (auto pOther : m_apActors)
 			{
@@ -116,7 +131,7 @@ void PhysicsScene::Update(float dt)
 			}
 		}
 
-		dirty.clear();
+		dirty.clear();*/
 	
 	
 	
@@ -152,3 +167,56 @@ void PhysicsScene::DebugScene()
 		count++;
 	}
 }
+
+void PhysicsScene::checkForCollision()
+{
+	int actorCount = m_apActors.size();
+	//need to check for collisions against all objects except this one. 
+	for (int outer = 0; outer < actorCount - 1; outer++)
+	{
+		for (int inner = outer + 1; inner < actorCount; inner++)
+		{
+			PhysicsObject* object1 = m_apActors[outer];
+			PhysicsObject* object2 = m_apActors[inner];
+			int shapeId1 = object1->GetShapeID();
+			int shapeId2 = object2->GetShapeID();
+
+			// using function pointers 
+			int functionIdx = (shapeId1 * ESHAPETYPE_COUNT) + shapeId2;
+			fn collisionFunctionPtr = collisionFunctionArray[functionIdx];
+
+			if (collisionFunctionPtr != nullptr)
+			{
+				// did a collision occur? 
+				collisionFunctionPtr(object1, object2);
+			}
+		}
+	}
+}
+
+bool PhysicsScene::sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	//try to cast objects to sphere and sphere 
+	Sphere* sphere1 = dynamic_cast<Sphere*>(obj1);
+	Sphere* sphere2 = dynamic_cast<Sphere*>(obj2);
+
+	//if we are successful then test for collision 
+	if (sphere1 != nullptr && sphere2 != nullptr)
+	{
+		glm::vec2 distance = sphere1->GetPosition() - sphere2->GetPosition();
+
+		float TotalRad = sphere1->GetRadius() + sphere2->GetRadius();
+
+		if (glm::length(distance) <= TotalRad)
+		{
+			sphere1->SetVelocity(glm::vec2(0,0));
+			sphere2->SetVelocity(glm::vec2(0, 0));
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+

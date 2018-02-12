@@ -3,6 +3,9 @@
 #include "Application.h"
 #include "Renderer2D.h"
 #include "PhysicsScene.h"
+#include <glm\ext.hpp>
+#include <glm\glm.hpp>
+#include "Sphere.h"
 
 class aieProject2D1App : public aie::Application {
 public:
@@ -34,4 +37,7 @@ protected:
 
 
 	glm::vec4 m_v4ClearColor;
+
+	Sphere* ball1;
+	Sphere* ball2;
 };

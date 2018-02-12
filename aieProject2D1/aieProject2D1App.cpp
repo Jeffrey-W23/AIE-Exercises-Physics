@@ -55,6 +55,14 @@ bool aieProject2D1App::startup()
 	ball4->ApplyForce(glm::vec2(30, 0));
 	ball5->ApplyForce(glm::vec2(-15, 0));*/
 
+	m_physicsScene->SetGravity(glm::vec2(0, 0));
+	ball1 = new Sphere(glm::vec2(-20, 0), glm::vec2(0, 0), 4.0f, 4, glm::vec4(1, 0, 0, 1));
+	ball2 = new Sphere(glm::vec2(10, 0), glm::vec2(0, 0), 4.0f, 4, glm::vec4(0, 1, 0, 1));
+	m_physicsScene->AddActor(ball1);
+	m_physicsScene->AddActor(ball2);
+	ball1->ApplyForce(glm::vec2(30, 0));
+	ball2->ApplyForce(glm::vec2(-15, 0));
+
 	// return
 	return true;
 }
@@ -85,6 +93,7 @@ void aieProject2D1App::update(float deltaTime)
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
+
 }
 
 void aieProject2D1App::draw() 

@@ -1,6 +1,7 @@
 // #includes, using, etc
 #pragma once
-#include <glm\vec2.hpp>
+#include <glm\ext.hpp>
+#include <glm\glm.hpp>
 
 //--------------------------------------------------------------------------------------
 // Enum EShapeType. Used for actor shape type
@@ -8,7 +9,8 @@
 enum EShapeType {
 	ESHAPETYPE_PLANE = 0,
 	ESHAPETYPE_SPHERE,
-	ESHAPETYPE_BOX
+	ESHAPETYPE_BOX,
+	ESHAPETYPE_COUNT
 };
 
 //--------------------------------------------------------------------------------------
@@ -20,13 +22,16 @@ protected:
 
 	//--------------------------------------------------------------------------------------
 	// Default Constructor.
+	//
+	// Param:
+	//		eShapeID: enum value of EShapeType.
 	//--------------------------------------------------------------------------------------
-	PhysicsObject(EShapeType eShapeID): m_eShapeID(eShapeID) {}
+	PhysicsObject(EShapeType eShapeID) : m_eShapeID(eShapeID) {}
 
 public:
 
 	//--------------------------------------------------------------------------------------
-	// FixedUpdate: A virtual function of PhysicsObject for resetting postion.
+	// FixedUpdate: A virtual function of PhysicsObject for updating each frame.
 	//
 	// Param:
 	//		gravity: a vector2 for an objects gravity.
@@ -45,9 +50,14 @@ public:
 	virtual void MakeGizmo() = 0;
 	
 	//--------------------------------------------------------------------------------------
-	// ResetPosition: A virtual function of PhysicsObject for resetting postion.
+	// ResetPosition: A virtual function of PhysicsObject for resetting object postion.
 	//--------------------------------------------------------------------------------------
 	virtual void ResetPosition() {};
+
+	//--------------------------------------------------------------------------------------
+	// EShapeType: 
+	//--------------------------------------------------------------------------------------
+	virtual EShapeType GetShapeID() { return m_eShapeID; };
 
 protected:
 
