@@ -1,7 +1,7 @@
 #pragma once
 #include "PhysicsObject.h"
 
-class Plane : PhysicsObject
+class Plane : public PhysicsObject
 {
 public: 
 	Plane() = delete;

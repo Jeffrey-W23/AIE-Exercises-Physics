@@ -9,10 +9,9 @@ public:
 	~Rigidbody();
 
 	virtual void FixedUpdate(glm::vec2 v2Gravity, float fTimeStep);
-	virtual void Debug() =0;
+	virtual void Debug() {}
 	void ApplyForce(glm::vec2 v2Force);
 	void ApplyForceToActor(Rigidbody* pActor, glm::vec2 v2Force);
-	virtual bool CheckCollision(PhysicsObject* pOther) = 0;
 	
 	glm::vec2 GetPosition() { return m_v2Position; }
 	float GetRotation() { return m_fRotation; }

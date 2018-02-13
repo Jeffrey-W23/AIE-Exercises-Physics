@@ -1,10 +1,13 @@
 #include "Plane.h"
 #include <Gizmos.h>
+#include "PhysicsObject.h"
 
 Plane::Plane(glm::vec2 normal, float distance) : PhysicsObject(ESHAPETYPE_PLANE)
 {
 	m_distanceToOrigin = 0;
 	m_normal = glm::vec2(0,1);
+
+	m_centrePoint = m_normal * m_distanceToOrigin;
 }
 
 Plane::~Plane()
@@ -16,7 +19,7 @@ void Plane::MakeGizmo()
 	float lineSegmentLength = 300; 
 	glm::vec2 centerPoint = m_normal * m_distanceToOrigin;
 	
-	// easy to rotate normal through 90 degrees around z 
+	// easy to rotate normal through 90 degrees around z
 	glm::vec2 parallel(m_normal.y, -m_normal.x); 
 	glm::vec4 colour(1, 1, 1, 1); 
 	glm::vec2 start = centerPoint + (parallel * lineSegmentLength); 

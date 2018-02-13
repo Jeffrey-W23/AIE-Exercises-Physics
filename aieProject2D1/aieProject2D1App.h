@@ -5,39 +5,63 @@
 #include "PhysicsScene.h"
 #include <glm\ext.hpp>
 #include <glm\glm.hpp>
-#include "Sphere.h"
 
+//--------------------------------------------------------------------------------------
+// aieProject2D1App object. Inherits from Application.
+//--------------------------------------------------------------------------------------
 class aieProject2D1App : public aie::Application {
 public:
 
-	// Constructor / Destructor
+	//--------------------------------------------------------------------------------------
+	// Default Constructor.
+	//--------------------------------------------------------------------------------------
 	aieProject2D1App();
+
+	//--------------------------------------------------------------------------------------
+	// Default Destructor
+	//--------------------------------------------------------------------------------------
 	virtual ~aieProject2D1App();
 
-	// starup / shutdown
+	//--------------------------------------------------------------------------------------
+	// startup: Initialize the game.
+	//
+	// Returns:
+	//		bool: Returns a true or false for if the startup is sucessful.
+	//--------------------------------------------------------------------------------------
 	virtual bool startup();
+
+	//--------------------------------------------------------------------------------------
+	// shutdown: Called on application shutdown and does all the cleaning up (eg. Deleteing pointers.)
+	//--------------------------------------------------------------------------------------
 	virtual void shutdown();
 
-	// Update
+	//--------------------------------------------------------------------------------------
+	// Update: A virtual function to update objects.
+	//
+	// Param:
+	//		deltaTime: Pass in deltaTime. A number that updates per second.
+	//--------------------------------------------------------------------------------------
 	virtual void update(float deltaTime);
 	
-	// Draw
+	//--------------------------------------------------------------------------------------
+	// Draw: A virtual function to render (or "draw") objects to the screen.
+	//--------------------------------------------------------------------------------------
 	virtual void draw();
 
 protected:
 
-	// Renderer2D pointer
-	aie::Renderer2D*	m_2dRenderer;
+	//--------------------------------------------------------------------------------------
+	// A pointer to Renderer2D.
+	//--------------------------------------------------------------------------------------
+	aie::Renderer2D* m_2dRenderer;
 
-	// Font poniter
-	aie::Font*			m_font;
+	//--------------------------------------------------------------------------------------
+	// A pointer to PhysicsScene.
+	//--------------------------------------------------------------------------------------
+	PhysicsScene* m_pPhysicsScene;
 
-	// Physics Scene pointer
-	PhysicsScene* m_physicsScene;
-
-
-	glm::vec4 m_v4ClearColor;
-
-	Sphere* ball1;
-	Sphere* ball2;
+	//--------------------------------------------------------------------------------------
+	// A vector4 for Clear Color.
+	//--------------------------------------------------------------------------------------
+	//glm::vec4 m_v4ClearColor;
 };

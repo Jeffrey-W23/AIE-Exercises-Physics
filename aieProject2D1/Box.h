@@ -8,12 +8,12 @@ public:
 	Box(glm::vec2 position, glm::vec2 velocity, float mass, float width, float height, glm::vec4 colour);
 	~Box();
 
-	virtual void makeGizmo();
+	virtual void MakeGizmo();
 	float getWidth() { return m_width; }
 	float getHeight() { return m_height; }
 	glm::vec2 getDimensions() { return m_dimensions; }
-	glm::vec2 getMin() { return m_min; }
-	glm::vec2 getMax() { return m_max; }
+	glm::vec2 getMin() { return glm::vec2(m_v2Position.x - (m_width ), m_v2Position.y - (m_height )); }
+	glm::vec2 getMax() { return glm::vec2(m_v2Position.x + (m_width), m_v2Position.y + (m_height )); }
 	glm::vec4 getColour() { return m_colour; }
 
 protected:
