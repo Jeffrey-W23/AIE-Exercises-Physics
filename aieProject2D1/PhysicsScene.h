@@ -88,11 +88,6 @@ public:
 	//		float: returns a float value of the current time step.
 	//--------------------------------------------------------------------------------------
 	float GetTimeStep() const { return m_fTimeStep; }
-
-	//--------------------------------------------------------------------------------------
-	// CheckCollision: Check for a collision between objects.
-	//--------------------------------------------------------------------------------------
-	void CheckCollision(); 
 	
 	//--------------------------------------------------------------------------------------
 	// PlaneToPlane: Check a collison between a plane and another plane.
@@ -192,6 +187,11 @@ public:
 	//		bool: Return true or false for if a collision has happened.
 	//--------------------------------------------------------------------------------------
 	static bool BoxToBox(PhysicsObject* obj1, PhysicsObject* obj2);
+
+	//--------------------------------------------------------------------------------------
+	// CheckCollision: Check for a collision between objects.
+	//--------------------------------------------------------------------------------------
+	void CheckCollision();
 
 protected:
 	

@@ -1,63 +1,82 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shapes">
+      <UniqueIdentifier>{cb2f585c-f9d7-4b7b-aa93-c4c9abfd18b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Header Files">
+      <UniqueIdentifier>{822a76ea-f691-41c5-be0f-39b7a983eba3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Source Files">
+      <UniqueIdentifier>{eebcf17f-20a8-4e75-b559-cd7c0375ba92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{0495a806-27bd-43f2-b2a0-521a6912080c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Header Files">
+      <UniqueIdentifier>{63848d13-797a-4bf1-b8a7-31c43d1eb239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Source Files">
+      <UniqueIdentifier>{2243dfcf-7ed9-4f37-8be2-73069c88da11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other">
+      <UniqueIdentifier>{800051e6-2aef-484b-a968-99dbf31d7b83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\Header Files">
+      <UniqueIdentifier>{32be1960-b40f-4696-b078-046b402ce1a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\Source Files">
+      <UniqueIdentifier>{e3118755-a178-43f3-a1fe-d7abf6e6c522}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="aieProject2D1App.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rigidbody.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Box.cpp">
+      <Filter>Shapes\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Plane.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Shapes\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Shapes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rigidbody.cpp">
+      <Filter>Shapes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsScene.cpp">
+      <Filter>Scene\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="aieProject2D1App.cpp">
+      <Filter>Other\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Other\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aieProject2D1App.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RigidBody.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Plane.h">
-      <Filter>Header Files</Filter>
+      <Filter>Shapes\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
-      <Filter>Header Files</Filter>
+      <Filter>Shapes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Shapes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Shapes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsObject.h">
+      <Filter>Shapes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsScene.h">
+      <Filter>Scene\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="aieProject2D1App.h">
+      <Filter>Other\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

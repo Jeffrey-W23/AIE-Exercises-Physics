@@ -28,6 +28,9 @@ PhysicsScene::PhysicsScene()
 {
 	// set defalut for timestep
 	m_fTimeStep = 0.01f;
+
+	// set defualt for gravity
+	m_v2Gravity = glm::vec2(0.0f, 0.0f);
 }
 
 //--------------------------------------------------------------------------------------
@@ -91,11 +94,11 @@ void PhysicsScene::Update(float deltaTime)
 			pActor->FixedUpdate(m_v2Gravity, m_fTimeStep);
 		}
 
-		// Check for a collision.
-		CheckCollision();
-
 		// update accumulated time by the time step
 		fAccumulatedTime -= m_fTimeStep;
+	
+		// Check for a collision.
+		CheckCollision();
 	}
 }
 
@@ -136,59 +139,13 @@ void PhysicsScene::DebugScene()
 }
 
 //--------------------------------------------------------------------------------------
-// CheckCollision: Check for a collision between objects.
-//--------------------------------------------------------------------------------------
-void PhysicsScene::CheckCollision()
-{
-	// new int value for the actor array size
-	int nActorCount = m_apActors.size();
-	
-	//need to check for collisions against all objects except this one.
-	// loop through each actor
-	for (int o = 0; o < nActorCount - 1; o++)
-	{
-		// loop through each actor plus 1
-		for (int i = o + 1; i < nActorCount; i++)
-		{
-			// Check the 2 objects that could be colliding.
-			PhysicsObject* object1 = m_apActors[o];
-			PhysicsObject* object2 = m_apActors[i];
-			
-			// get shapeIds of these objects.
-			int nShapeId1 = object1->GetShapeID();
-			int nShapeId2 = object2->GetShapeID();
-
-			// figure out the shapes that are colliding and which function to run.
-			int functionIdx = (nShapeId1 * ESHAPETYPE_COUNT) + nShapeId2;
-			fn collisionFunctionPtr = collisionFunctionArray[functionIdx];
-
-			// if the function pointer is valid.
-			if (collisionFunctionPtr != nullptr)
-			{
-				// Check collision of the 2 objects. 
-				collisionFunctionPtr(object1, object2);
-			}
-		}
-	}
-}
-
-
-
-
-
-
-
-
-
-
-//--------------------------------------------------------------------------------------
 // PlaneToPlane: Check a collison between a plane and another plane.
 //
-// Return:
-//		bool: Return true or false for if a collision has happened.
 // Param:
 //		obj1: Object 1 for the collison check.
 //		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
 //--------------------------------------------------------------------------------------
 bool PhysicsScene::PlaneToPlane(PhysicsObject* obj1, PhysicsObject* obj2)
 {
@@ -196,23 +153,14 @@ bool PhysicsScene::PlaneToPlane(PhysicsObject* obj1, PhysicsObject* obj2)
 	return false;
 }
 
-
-
-
-
-
-
-
-
-
 //--------------------------------------------------------------------------------------
 // PlaneToSphere: Check a collison between a plane and a sphere.
 //
-// Return:
-//		bool: Return true or false for if a collision has happened.
 // Param:
 //		obj1: Object 1 for the collison check.
 //		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
 //--------------------------------------------------------------------------------------
 bool PhysicsScene::PlaneToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 {
@@ -223,11 +171,11 @@ bool PhysicsScene::PlaneToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 //--------------------------------------------------------------------------------------
 // SphereToPlane: Check a collison between a sphere and a plane.
 //
-// Return:
-//		bool: Return true or false for if a collision has happened.
 // Param:
 //		obj1: Object 1 for the collison check.
 //		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
 //--------------------------------------------------------------------------------------
 bool PhysicsScene::SphereToPlane(PhysicsObject* obj1, PhysicsObject* obj2)
 {
@@ -272,11 +220,11 @@ bool PhysicsScene::SphereToPlane(PhysicsObject* obj1, PhysicsObject* obj2)
 //--------------------------------------------------------------------------------------
 // SphereToSphere: Check a collison between a sphere and another sphere.
 //
-// Return:
-//		bool: Return true or false for if a collision has happened.
 // Param:
 //		obj1: Object 1 for the collison check.
 //		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
 //--------------------------------------------------------------------------------------
 bool PhysicsScene::SphereToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 {
@@ -309,33 +257,14 @@ bool PhysicsScene::SphereToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 	return false;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-// UP TO HERE!!!
-
-
-
-
-
-
-
 //--------------------------------------------------------------------------------------
 // PlaneToBox: Check a collison between a plane and a box.
 //
-// Return:
-//		bool: Return true or false for if a collision has happened.
 // Param:
 //		obj1: Object 1 for the collison check.
 //		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
 //--------------------------------------------------------------------------------------
 bool PhysicsScene::PlaneToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 {
@@ -346,16 +275,21 @@ bool PhysicsScene::PlaneToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 	// if plane and box are valid
 	if (pPlane != nullptr || pBox != nullptr)
 	{
-		//
-		glm::vec2 v2Distance = pBox->GetPosition() - pPlane->getCentre();
-		glm::vec2 v2HalfWidth = pBox->GetPosition() + glm::vec2(pBox->getWidth() * 0.5f, pBox->getHeight());
-		glm::vec2 v2HalfHeight = pBox->GetPosition() + glm::vec2(pBox->getWidth(), pBox->getHeight() * 0.5f);
+		// Get the normal of the plane and get each point of the box
+		glm::vec2 v2Normal = pPlane->getNormal();
+		glm::vec2 v2BottomLeft = pBox->getMin();
+		glm::vec2 v2BottomRight = pBox->getMin() + glm::vec2(pBox->getWidth(), 0);
+		glm::vec2 v2TopLeft = pBox->getMin() + glm::vec2(0, pBox->getHeight());
+		glm::vec2 v2TopRight = pBox->getMax();
 
-		// if the length of the distance is less then the length of the half width OR less then the length of the half height.
-		if (glm::length(v2Distance) < glm::length(v2HalfWidth) || glm::length(v2Distance) < glm::length(v2HalfHeight))
+		// box crosses the plane
+		if (glm::dot(v2Normal, v2BottomLeft) - pPlane->getDistance() < 0 ||
+			glm::dot(v2Normal, v2BottomRight) - pPlane->getDistance() < 0 ||
+			glm::dot(v2Normal, v2TopLeft) - pPlane->getDistance() < 0 ||
+			glm::dot(v2Normal, v2TopRight) - pPlane->getDistance() < 0)
 		{
-			// Set the velocity of the box to 0 
-			pBox->SetVelocity(glm::vec2(0, 0));
+			// Set the velocity of the spheres to 0 
+			pBox->SetVelocity(glm::vec2(0.0f, 0.0f)); // TEMP
 
 			// there was a collision return true
 			return true;
@@ -369,42 +303,49 @@ bool PhysicsScene::PlaneToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 //--------------------------------------------------------------------------------------
 // SphereToBox: Check a collison between a sphere and a box.
 //
-// Return:
-//		bool: Return true or false for if a collision has happened.
 // Param:
 //		obj1: Object 1 for the collison check.
 //		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
 //--------------------------------------------------------------------------------------
 bool PhysicsScene::SphereToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 {
-	Sphere* sphere = dynamic_cast<Sphere*>(obj1);
-	Box* box = dynamic_cast<Box*>(obj2);
+	// Cast each object to either a sphere or plane.
+	Sphere* pSphere = dynamic_cast<Sphere*>(obj1);
+	Box* pBox = dynamic_cast<Box*>(obj2);
 
-	if (sphere != nullptr && box != nullptr)
+	// if plane and box are valid
+	if (pSphere != nullptr && pBox != nullptr)
 	{
-		glm::vec2 a = glm::clamp(sphere->GetPosition(), box->getMin(), box->getMax());
-		glm::vec2 v = a - sphere->GetPosition();
+		// clamp the sphere postion and the box min and max
+		glm::vec2 v2Clamp = glm::clamp(pSphere->GetPosition(), pBox->getMin(), pBox->getMax());
+		glm::vec2 v2Value = v2Clamp - pSphere->GetPosition();
 
-		if (glm::length(v) <= sphere->GetRadius())
+		// if the length of v2Value is less than or equal to sphere radius
+		if (glm::length(v2Value) <= pSphere->GetRadius())
 		{
-			sphere->SetVelocity(glm::vec2(0, 0));
-			box->SetVelocity(glm::vec2(0, 0));
+			// Set the velocity of the sphere and box to 0 
+			pSphere->SetVelocity(glm::vec2(0, 0));
+			pBox->SetVelocity(glm::vec2(0, 0));
 
+			// there was a collision return true
 			return true;
 		}
 	}
 
+	// else return false
 	return false;
 }
 
 //--------------------------------------------------------------------------------------
 // BoxToPlane: Check a collison between a box and a plane.
 //
-// Return:
-//		bool: Return true or false for if a collision has happened.
 // Param:
 //		obj1: Object 1 for the collison check.
 //		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
 //--------------------------------------------------------------------------------------
 bool PhysicsScene::BoxToPlane(PhysicsObject* obj1, PhysicsObject* obj2)
 {
@@ -415,11 +356,11 @@ bool PhysicsScene::BoxToPlane(PhysicsObject* obj1, PhysicsObject* obj2)
 //--------------------------------------------------------------------------------------
 // BoxToSphere: Check a collison between a box and a sphere.
 //
-// Return:
-//		bool: Return true or false for if a collision has happened.
 // Param:
 //		obj1: Object 1 for the collison check.
 //		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
 //--------------------------------------------------------------------------------------
 bool PhysicsScene::BoxToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 {
@@ -430,36 +371,81 @@ bool PhysicsScene::BoxToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 //--------------------------------------------------------------------------------------
 // BoxToBox: Check a collison between a box and another box.
 //
-// Return:
-//		bool: Return true or false for if a collision has happened.
 // Param:
 //		obj1: Object 1 for the collison check.
 //		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
 //--------------------------------------------------------------------------------------
 bool PhysicsScene::BoxToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 {
+	// Cast each object to either a sphere or plane.
 	Box* box1 = dynamic_cast<Box*>(obj1);
 	Box* box2 = dynamic_cast<Box*>(obj2);
 
+	// if boxes are valid
 	if (box1 != nullptr && box2 != nullptr)
 	{
+		// get the min and max of box1
 		glm::vec2 min1 = box1->getMin();
 		glm::vec2 max1 = box1->getMax();
 
+		// get the min and max of box2
 		glm::vec2 min2 = box2->getMin();
 		glm::vec2 max2 = box2->getMax();
 
+		// if the boxes cross
 		if (min1.x <= max2.x && 
 			min1.y <= max2.y && 
 			max1.x >= min2.x && 
 			max1.y >= min2.y)
 		{
+			// Set the velocity of the boxes to 0
 			box1->SetVelocity(glm::vec2(0, 0));
 			box2->SetVelocity(glm::vec2(0, 0));
 
+			// there was a collision return true
 			return true;
 		}
 	}
 
+	// else return false
 	return false;
+}
+
+//--------------------------------------------------------------------------------------
+// CheckCollision: Check for a collision between objects.
+//--------------------------------------------------------------------------------------
+void PhysicsScene::CheckCollision()
+{
+	// new int value for the actor array size
+	int nActorCount = m_apActors.size();
+
+	//need to check for collisions against all objects except this one.
+	// loop through each actor
+	for (int o = 0; o < nActorCount - 1; o++)
+	{
+		// loop through each actor plus 1
+		for (int i = o + 1; i < nActorCount; i++)
+		{
+			// Check the 2 objects that could be colliding.
+			PhysicsObject* object1 = m_apActors[o];
+			PhysicsObject* object2 = m_apActors[i];
+
+			// get shapeIds of these objects.
+			int nShapeId1 = object1->GetShapeID();
+			int nShapeId2 = object2->GetShapeID();
+
+			// figure out the shapes that are colliding and which function to run.
+			int functionIdx = (nShapeId1 * ESHAPETYPE_COUNT) + nShapeId2;
+			fn collisionFunctionPtr = collisionFunctionArray[functionIdx];
+
+			// if the function pointer is valid.
+			if (collisionFunctionPtr != nullptr)
+			{
+				// Check collision of the 2 objects. 
+				collisionFunctionPtr(object1, object2);
+			}
+		}
+	}
 }
