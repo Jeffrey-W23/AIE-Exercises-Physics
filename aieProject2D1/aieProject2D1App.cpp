@@ -24,7 +24,6 @@ aieProject2D1App::aieProject2D1App()
 //--------------------------------------------------------------------------------------
 aieProject2D1App::~aieProject2D1App() 
 {
-
 }
 
 //--------------------------------------------------------------------------------------
@@ -79,6 +78,8 @@ bool aieProject2D1App::startup()
 	m_pPhysicsScene->AddActor(box2);
 	m_pPhysicsScene->AddActor(box3);
 	m_pPhysicsScene->AddActor(box4);
+	
+	//
 	m_pPhysicsScene->AddActor(plane);
 
 	//
@@ -99,6 +100,9 @@ bool aieProject2D1App::startup()
 
 
 
+
+
+
 	// return
 	return true;
 }
@@ -110,6 +114,12 @@ void aieProject2D1App::shutdown()
 {
 	// delete renderer
 	delete m_2dRenderer;
+
+	// delete gizmos
+	aie::Gizmos::destroy();
+
+	// delete scene
+	delete m_pPhysicsScene;
 }
 
 //--------------------------------------------------------------------------------------
@@ -120,6 +130,8 @@ void aieProject2D1App::shutdown()
 //--------------------------------------------------------------------------------------
 void aieProject2D1App::update(float deltaTime) 
 {
+
+
 
 
 

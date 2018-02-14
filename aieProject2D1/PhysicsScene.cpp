@@ -187,10 +187,10 @@ bool PhysicsScene::SphereToPlane(PhysicsObject* obj1, PhysicsObject* obj2)
 	if (pSphere != nullptr && pPlane != nullptr)
 	{
 		// new vector2 for the collision Normal
-		glm::vec2 v2CollisionNormal = pPlane->getNormal();
+		glm::vec2 v2CollisionNormal = pPlane->GetNormal();
 
 		// dot product of sphere position and plane normal minus plane distance
-		float fSphereToPlane = glm::dot(pSphere->GetPosition(), pPlane->getNormal()) - pPlane->getDistance();
+		float fSphereToPlane = glm::dot(pSphere->GetPosition(), pPlane->GetNormal()) - pPlane->GetDistance();
 
 		// dot product value is less then 0
 		if (SphereToPlane < 0)
@@ -276,17 +276,17 @@ bool PhysicsScene::PlaneToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 	if (pPlane != nullptr || pBox != nullptr)
 	{
 		// Get the normal of the plane and get each point of the box
-		glm::vec2 v2Normal = pPlane->getNormal();
-		glm::vec2 v2BottomLeft = pBox->getMin();
-		glm::vec2 v2BottomRight = pBox->getMin() + glm::vec2(pBox->getWidth(), 0);
-		glm::vec2 v2TopLeft = pBox->getMin() + glm::vec2(0, pBox->getHeight());
-		glm::vec2 v2TopRight = pBox->getMax();
+		glm::vec2 v2Normal = pPlane->GetNormal();
+		glm::vec2 v2BottomLeft = pBox->GetMin();
+		glm::vec2 v2BottomRight = pBox->GetMin() + glm::vec2(pBox->GetWidth(), 0);
+		glm::vec2 v2TopLeft = pBox->GetMin() + glm::vec2(0, pBox->GetHeight());
+		glm::vec2 v2TopRight = pBox->GetMax();
 
 		// box crosses the plane
-		if (glm::dot(v2Normal, v2BottomLeft) - pPlane->getDistance() < 0 ||
-			glm::dot(v2Normal, v2BottomRight) - pPlane->getDistance() < 0 ||
-			glm::dot(v2Normal, v2TopLeft) - pPlane->getDistance() < 0 ||
-			glm::dot(v2Normal, v2TopRight) - pPlane->getDistance() < 0)
+		if (glm::dot(v2Normal, v2BottomLeft) - pPlane->GetDistance() < 0 ||
+			glm::dot(v2Normal, v2BottomRight) - pPlane->GetDistance() < 0 ||
+			glm::dot(v2Normal, v2TopLeft) - pPlane->GetDistance() < 0 ||
+			glm::dot(v2Normal, v2TopRight) - pPlane->GetDistance() < 0)
 		{
 			// Set the velocity of the spheres to 0 
 			pBox->SetVelocity(glm::vec2(0.0f, 0.0f)); // TEMP
@@ -319,7 +319,7 @@ bool PhysicsScene::SphereToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 	if (pSphere != nullptr && pBox != nullptr)
 	{
 		// clamp the sphere postion and the box min and max
-		glm::vec2 v2Clamp = glm::clamp(pSphere->GetPosition(), pBox->getMin(), pBox->getMax());
+		glm::vec2 v2Clamp = glm::clamp(pSphere->GetPosition(), pBox->GetMin(), pBox->GetMax());
 		glm::vec2 v2Value = v2Clamp - pSphere->GetPosition();
 
 		// if the length of v2Value is less than or equal to sphere radius
@@ -387,12 +387,12 @@ bool PhysicsScene::BoxToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 	if (box1 != nullptr && box2 != nullptr)
 	{
 		// get the min and max of box1
-		glm::vec2 min1 = box1->getMin();
-		glm::vec2 max1 = box1->getMax();
+		glm::vec2 min1 = box1->GetMin();
+		glm::vec2 max1 = box1->GetMax();
 
 		// get the min and max of box2
-		glm::vec2 min2 = box2->getMin();
-		glm::vec2 max2 = box2->getMax();
+		glm::vec2 min2 = box2->GetMin();
+		glm::vec2 max2 = box2->GetMax();
 
 		// if the boxes cross
 		if (min1.x <= max2.x && 
