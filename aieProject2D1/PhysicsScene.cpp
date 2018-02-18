@@ -205,8 +205,8 @@ bool PhysicsScene::SphereToPlane(PhysicsObject* obj1, PhysicsObject* obj2)
 		// if intersection is over 0
 		if (fIntersection > 0)
 		{
-			// Set the velocity of the sphere to 0 
-			pSphere->SetVelocity(glm::vec2(0, 0)); // TEMP
+			// Resolve collision between plane and sphere
+			pPlane->ResolveCollision(pSphere);
 			
 			// there was a collision return true
 			return true;
@@ -244,9 +244,10 @@ bool PhysicsScene::SphereToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 		// if the length of the distance is less then or equal to Total radius
 		if (glm::length(v2Distance) <= fTotalRad)
 		{
-			// Set the velocity of the spheres to 0 
-			pSphere1->SetVelocity(glm::vec2(0, 0)); // TEMP
-			pSphere2->SetVelocity(glm::vec2(0, 0)); // TEMP
+			// Resolve collision between spheres
+			float fOverlap = glm::length(v2Distance) - fTotalRad;
+			glm::vec2 v2Overlap = glm::normalize(v2Distance) * fOverlap;
+			pSphere2->SetPosition(pSphere2->GetPosition() + v2Overlap);
 
 			// there was a collision return true
 			return true;
@@ -288,8 +289,8 @@ bool PhysicsScene::PlaneToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 			glm::dot(v2Normal, v2TopLeft) - pPlane->GetDistance() < 0 ||
 			glm::dot(v2Normal, v2TopRight) - pPlane->GetDistance() < 0)
 		{
-			// Set the velocity of the spheres to 0 
-			pBox->SetVelocity(glm::vec2(0.0f, 0.0f)); // TEMP
+			// Resolve collision between plane and box
+			pPlane->ResolveCollision(pBox);
 
 			// there was a collision return true
 			return true;
@@ -325,9 +326,8 @@ bool PhysicsScene::SphereToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 		// if the length of v2Value is less than or equal to sphere radius
 		if (glm::length(v2Value) <= pSphere->GetRadius())
 		{
-			// Set the velocity of the sphere and box to 0 
-			pSphere->SetVelocity(glm::vec2(0, 0));
-			pBox->SetVelocity(glm::vec2(0, 0));
+			// Resolve collision between sphere and box
+			pSphere->ResolveCollision(pBox);
 
 			// there was a collision return true
 			return true;
@@ -380,29 +380,28 @@ bool PhysicsScene::BoxToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 bool PhysicsScene::BoxToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 {
 	// Cast each object to either a sphere or plane.
-	Box* box1 = dynamic_cast<Box*>(obj1);
-	Box* box2 = dynamic_cast<Box*>(obj2);
+	Box* pBox1 = dynamic_cast<Box*>(obj1);
+	Box* pBox2 = dynamic_cast<Box*>(obj2);
 
 	// if boxes are valid
-	if (box1 != nullptr && box2 != nullptr)
+	if (pBox1 != nullptr && pBox2 != nullptr)
 	{
 		// get the min and max of box1
-		glm::vec2 min1 = box1->GetMin();
-		glm::vec2 max1 = box1->GetMax();
+		glm::vec2 v2Min1 = pBox1->GetMin();
+		glm::vec2 v2Max1 = pBox1->GetMax();
 
 		// get the min and max of box2
-		glm::vec2 min2 = box2->GetMin();
-		glm::vec2 max2 = box2->GetMax();
+		glm::vec2 v2Min2 = pBox2->GetMin();
+		glm::vec2 v2Max2 = pBox2->GetMax();
 
 		// if the boxes cross
-		if (min1.x <= max2.x && 
-			min1.y <= max2.y && 
-			max1.x >= min2.x && 
-			max1.y >= min2.y)
+		if (v2Min1.x <= v2Max2.x && 
+			v2Min1.y <= v2Max2.y && 
+			v2Max1.x >= v2Min2.x && 
+			v2Max1.y >= v2Min2.y)
 		{
-			// Set the velocity of the boxes to 0
-			box1->SetVelocity(glm::vec2(0, 0));
-			box2->SetVelocity(glm::vec2(0, 0));
+			// Resolve collision between boxes
+			pBox1->ResolveCollision(pBox2);
 
 			// there was a collision return true
 			return true;

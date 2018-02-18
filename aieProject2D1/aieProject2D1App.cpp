@@ -42,8 +42,8 @@ bool aieProject2D1App::startup()
 
 	// Set up the physics scene
 	m_pPhysicsScene = new PhysicsScene();
-	m_pPhysicsScene->SetGravity(glm::vec2(0, 0));
-	m_pPhysicsScene->SetTimeStep(0.01f);
+	m_pPhysicsScene->SetGravity(glm::vec2(0, -10));
+	m_pPhysicsScene->SetTimeStep(0.03f);
 
 
 

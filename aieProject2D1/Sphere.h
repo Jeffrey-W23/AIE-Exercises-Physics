@@ -34,20 +34,6 @@ public:
 	virtual void MakeGizmo();
 
 	//--------------------------------------------------------------------------------------
-	// CheckCollision: Vitrual functon to check if the sphere is colliding with a passed in 
-	// pointer.
-	//
-	// Param:
-	//		pOther: pointer to a PhysicObject.
-	//--------------------------------------------------------------------------------------
-	virtual bool CheckCollision(PhysicsObject* pOther);
-
-	//--------------------------------------------------------------------------------------
-	// Debug: A function for debugging the sphere.
-	//--------------------------------------------------------------------------------------
-	void Debug() {}
-
-	//--------------------------------------------------------------------------------------
 	// GetRadius: Get the radius of the sphere.
 	//
 	// Return:

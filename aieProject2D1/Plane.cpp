@@ -14,8 +14,7 @@ Plane::Plane(glm::vec2 v2Normal, float fDistance) : PhysicsObject(ESHAPETYPE_PLA
 {
 	// set defaults
 	m_fDistanceToOrigin = 0;
-	m_v2Normal = glm::vec2(0,1);
-	m_v2CentrePoint = m_v2Normal * m_fDistanceToOrigin;
+	m_v2Normal = v2Normal;
 }
 
 //--------------------------------------------------------------------------------------
@@ -56,4 +55,25 @@ void Plane::FixedUpdate(glm::vec2 gravity, float timeStep)
 //--------------------------------------------------------------------------------------
 void Plane::ResetPosition()
 {
+}
+
+
+
+
+
+
+
+
+
+void Plane::ResolveCollision(Rigidbody* pActor)
+{
+	glm::vec2 v2Normal = m_v2Normal;
+	glm::vec2 v2RelativeVelocity = pActor->GetVelocity();
+
+	float fElasticity = 1;
+	float fJFormula = glm::dot(-(1 + fElasticity) * (v2RelativeVelocity), v2Normal) / glm::dot(v2Normal, v2Normal * (1 / pActor->GetMass()));
+
+	glm::vec2 force = v2Normal * fJFormula;
+
+	pActor->ApplyForce(force);
 }

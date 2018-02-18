@@ -1,6 +1,7 @@
 // #includes, using, etc
 #pragma once
 #include "PhysicsObject.h"
+#include "Rigidbody.h"
 
 //--------------------------------------------------------------------------------------
 // Plane object. Inherits from PhysicsObject.
@@ -52,13 +53,27 @@ public:
 	//--------------------------------------------------------------------------------------
 	virtual void ResetPosition();
 
-	//--------------------------------------------------------------------------------------
-	// GetCentre: Get the centre of the plane.
-	//
-	// Return:
-	//		Vector2: the centre point of the plane.
-	//--------------------------------------------------------------------------------------
-	glm::vec2 GetCentre() { return m_v2CentrePoint; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+	void ResolveCollision(Rigidbody* actor2);
+
+
+
+
+
+
+
 
 	//--------------------------------------------------------------------------------------
 	// GetNormal: Get the normal of the plane.
@@ -82,11 +97,6 @@ protected:
 	// A vector2 for the normal
 	//--------------------------------------------------------------------------------------
 	glm::vec2 m_v2Normal;
-
-	//--------------------------------------------------------------------------------------
-	// A vector2 for the centrePoint
-	//--------------------------------------------------------------------------------------
-	glm::vec2 m_v2CentrePoint;
 
 	//--------------------------------------------------------------------------------------
 	// A float for the dsitance to Origin.

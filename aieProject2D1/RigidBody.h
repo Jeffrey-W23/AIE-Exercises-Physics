@@ -19,7 +19,7 @@ public:
 	//		fRotation: the rotation of the rigidbody.
 	//		fMass: the mass of the rigidbody.
 	//--------------------------------------------------------------------------------------
-	Rigidbody(EShapeType eShapeID, glm::vec2 v2Position, glm::vec2 v2Velocity, float fRotation, float fMass);
+	Rigidbody(EShapeType eShapeID, glm::vec2 v2Position, glm::vec2 v2Velocity, float fRotation, float fMass, float fLinearDrag, float fAngularDrag, float fElasticity);
 
 	//--------------------------------------------------------------------------------------
 	// Default Destructor
@@ -67,6 +67,14 @@ public:
 	glm::vec2 GetPosition() { return m_v2Position; }
 
 	//--------------------------------------------------------------------------------------
+	// SetPosition: Set the position of the rigidbody.
+	//
+	// Param:
+	//		v2Position: the position to set the rigidbody to.
+	//--------------------------------------------------------------------------------------
+	void SetPosition(glm::vec2 v2Position) { m_v2Position = v2Position; }
+
+	//--------------------------------------------------------------------------------------
 	// GetRotation: Get the rotation of the rigidbody.
 	//
 	// Return:
@@ -98,6 +106,34 @@ public:
 	//--------------------------------------------------------------------------------------
 	void SetVelocity(glm::vec2 v2Value) { m_v2Velocity = v2Value; }
 
+
+
+
+
+
+
+
+
+	float GetLinearDrag() { return m_fLinearDrag; }
+	float GetAngularDrag() { return m_fAngularDrag; }
+	float GetElasticity() { return m_fElasticity; }
+
+
+
+
+
+
+
+
+
+	//--------------------------------------------------------------------------------------
+	// ResolveCollision: Resolve a collision between 2 shapes with a rigidbody.
+	//
+	// Param:
+	//		pActor: the object being collided with.
+	//--------------------------------------------------------------------------------------
+	void ResolveCollision(Rigidbody* pActor);
+
 protected:
 	
 	//--------------------------------------------------------------------------------------
@@ -119,4 +155,16 @@ protected:
 	// A float for the roaation of the rigidbody
 	//--------------------------------------------------------------------------------------
 	float m_fRotation;
+
+
+
+
+
+
+
+
+	float m_fAngularVelocity;
+	float m_fLinearDrag;
+	float m_fAngularDrag;
+	float m_fElasticity;
 };
