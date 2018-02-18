@@ -11,7 +11,6 @@ enum EShapeType {
 	ESHAPETYPE_SPHERE,
 	ESHAPETYPE_BOX,
 	ESHAPETYPE_COUNT
-	
 };
 
 //--------------------------------------------------------------------------------------
