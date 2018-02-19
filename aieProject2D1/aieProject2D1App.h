@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "Renderer2D.h"
 #include "PhysicsScene.h"
-#include <glm\ext.hpp>
 #include <glm\glm.hpp>
 
 //--------------------------------------------------------------------------------------

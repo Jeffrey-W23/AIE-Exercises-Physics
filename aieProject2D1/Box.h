@@ -67,7 +67,7 @@ public:
 	// Return:
 	//		Vector2: a vector2 value for the min of the box.
 	//--------------------------------------------------------------------------------------
-	glm::vec2 GetMin() { return glm::vec2(m_v2Position.x - (m_fWidth ), m_v2Position.y - (m_fHeight )); }
+	glm::vec2 GetMin() { return glm::vec2(m_v2Position.x - m_fWidth, m_v2Position.y - m_fHeight); }
 
 	//--------------------------------------------------------------------------------------
 	// GetMax: Get the max of the box.
@@ -75,7 +75,7 @@ public:
 	// Return:
 	//		Vector2: a vector2 value for the max of the box.
 	//--------------------------------------------------------------------------------------
-	glm::vec2 GetMax() { return glm::vec2(m_v2Position.x + (m_fWidth), m_v2Position.y + (m_fHeight)); }
+	glm::vec2 GetMax() { return glm::vec2(m_v2Position.x + m_fWidth, m_v2Position.y + m_fHeight); }
 
 	//--------------------------------------------------------------------------------------
 	// GetColour: Get the color of the box.

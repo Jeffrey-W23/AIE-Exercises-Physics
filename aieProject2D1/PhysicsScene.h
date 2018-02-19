@@ -1,6 +1,7 @@
 // #includes, using, etc
 #pragma once
-#include <glm\vec2.hpp>
+#include <glm\glm.hpp>
+#include <glm\ext.hpp>
 #include <vector>
 
 // forward declarations
@@ -90,6 +91,11 @@ public:
 	float GetTimeStep() const { return m_fTimeStep; }
 	
 	//--------------------------------------------------------------------------------------
+	// CheckCollision: Check for a collision between objects.
+	//--------------------------------------------------------------------------------------
+	void CheckCollision();
+
+	//--------------------------------------------------------------------------------------
 	// PlaneToPlane: Check a collison between a plane and another plane.
 	//
 	// Param:
@@ -109,29 +115,7 @@ public:
 	// Return:
 	//		bool: Return true or false for if a collision has happened.
 	//--------------------------------------------------------------------------------------
-	static bool PlaneToSphere(PhysicsObject*obj1, PhysicsObject* obj2);
-
-	//--------------------------------------------------------------------------------------
-	// SphereToPlane: Check a collison between a sphere and a plane.
-	//
-	// Param:
-	//		obj1: Object 1 for the collison check.
-	//		obj2: Object 2 for the collision check.
-	// Return:
-	//		bool: Return true or false for if a collision has happened.
-	//--------------------------------------------------------------------------------------
-	static bool SphereToPlane(PhysicsObject*obj1, PhysicsObject* obj2);
-
-	//--------------------------------------------------------------------------------------
-	// SphereToSphere: Check a collison between a sphere and another sphere.
-	//
-	// Param:
-	//		obj1: Object 1 for the collison check.
-	//		obj2: Object 2 for the collision check.
-	// Return:
-	//		bool: Return true or false for if a collision has happened.
-	//--------------------------------------------------------------------------------------
-	static bool SphereToSphere(PhysicsObject*obj1, PhysicsObject* obj2);
+	static bool PlaneToSphere(PhysicsObject* obj1, PhysicsObject* obj2);
 
 	//--------------------------------------------------------------------------------------
 	// PlaneToBox: Check a collison between a plane and a box.
@@ -143,6 +127,28 @@ public:
 	//		bool: Return true or false for if a collision has happened.
 	//--------------------------------------------------------------------------------------
 	static bool PlaneToBox(PhysicsObject* obj1, PhysicsObject* obj2);
+
+	//--------------------------------------------------------------------------------------
+	// SphereToPlane: Check a collison between a sphere and a plane.
+	//
+	// Param:
+	//		obj1: Object 1 for the collison check.
+	//		obj2: Object 2 for the collision check.
+	// Return:
+	//		bool: Return true or false for if a collision has happened.
+	//--------------------------------------------------------------------------------------
+	static bool SphereToPlane(PhysicsObject* obj1, PhysicsObject* obj2);
+
+	//--------------------------------------------------------------------------------------
+	// SphereToSphere: Check a collison between a sphere and another sphere.
+	//
+	// Param:
+	//		obj1: Object 1 for the collison check.
+	//		obj2: Object 2 for the collision check.
+	// Return:
+	//		bool: Return true or false for if a collision has happened.
+	//--------------------------------------------------------------------------------------
+	static bool SphereToSphere(PhysicsObject* obj1, PhysicsObject* obj2);
 
 	//--------------------------------------------------------------------------------------
 	// SphereToBox: Check a collison between a sphere and a box.
@@ -187,11 +193,6 @@ public:
 	//		bool: Return true or false for if a collision has happened.
 	//--------------------------------------------------------------------------------------
 	static bool BoxToBox(PhysicsObject* obj1, PhysicsObject* obj2);
-
-	//--------------------------------------------------------------------------------------
-	// CheckCollision: Check for a collision between objects.
-	//--------------------------------------------------------------------------------------
-	void CheckCollision();
 
 protected:
 	

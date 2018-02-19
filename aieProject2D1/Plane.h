@@ -2,6 +2,7 @@
 #pragma once
 #include "PhysicsObject.h"
 #include "Rigidbody.h"
+#include <glm\glm.hpp>
 
 //--------------------------------------------------------------------------------------
 // Plane object. Inherits from PhysicsObject.
@@ -36,7 +37,7 @@ public:
 	//		v2Gravity: vector2 gravity to apply to the update function.
 	//		fTimeStep: float value for the time time step of the update.
 	//--------------------------------------------------------------------------------------
-	virtual void FixedUpdate(glm::vec2 v2Gravity, float fTimeStep);
+	virtual void FixedUpdate(glm::vec2 v2Gravity, float fTimeStep) {}
 
 	//--------------------------------------------------------------------------------------
 	// Debug: Debugging function for this object.
@@ -51,7 +52,7 @@ public:
 	//--------------------------------------------------------------------------------------
 	// ResetPosition: Reset the postion of the plane.
 	//--------------------------------------------------------------------------------------
-	virtual void ResetPosition();
+	virtual void ResetPosition() {}
 
 
 

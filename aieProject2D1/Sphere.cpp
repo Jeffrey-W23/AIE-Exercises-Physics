@@ -1,7 +1,5 @@
 // #includes, using, etc
 #include "Sphere.h"
-#include "Rigidbody.h"
-#include "glm/glm.hpp"
 #include <Gizmos.h>
 
 //--------------------------------------------------------------------------------------
@@ -14,7 +12,7 @@
 //		fRadius: a float value for sphere radius.
 //		v4Color: a vector4 for sphere color.
 //--------------------------------------------------------------------------------------
-Sphere::Sphere(glm::vec2 v2Position, glm::vec2 v2Velocity, float fMass, float fRadius, glm::vec4 v4Color) : Rigidbody(ESHAPETYPE_SPHERE, m_v2Position, m_v2Velocity, 0, m_fMass, 0.2f, 0.2f, 0.8f)
+Sphere::Sphere(glm::vec2 v2Position, glm::vec2 v2Velocity, float fMass, float fRadius, glm::vec4 v4Color) : Rigidbody(ESHAPETYPE_SPHERE, v2Position, v2Velocity, 0, fMass, 0.2f, 0.2f, 0.8f)
 {
 	// set sphere radius
 	m_fRadius = fRadius;

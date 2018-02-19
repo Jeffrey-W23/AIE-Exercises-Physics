@@ -1,8 +1,6 @@
 // #includes, using, etc
 #pragma once
 #include "Rigidbody.h"
-#include <glm\vec2.hpp>
-#include <glm\vec4.hpp>
 
 //--------------------------------------------------------------------------------------
 // Sphere object. Inherits from Rigidbody.
@@ -10,6 +8,19 @@
 class Sphere : public Rigidbody
 {
 public:
+
+
+
+
+
+
+	Sphere() = delete;
+
+
+
+
+
+
 
 	//--------------------------------------------------------------------------------------
 	// Default Constructor.

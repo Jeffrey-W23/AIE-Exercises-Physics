@@ -2,14 +2,11 @@
 #include "aieProject2D1App.h"
 #include "Texture.h"
 #include "Input.h"
-#include <Gizmos.h>
-#include <glm\ext.hpp>
-#include <glm\glm.hpp>
 #include "Sphere.h"
 #include "Box.h"
 #include "Plane.h"
-#include "gl_core_4_4.h"
-#include "imgui.h"
+#include <Gizmos.h>
+#include <glm\ext.hpp>
 
 //--------------------------------------------------------------------------------------
 // Default Constructor.
@@ -43,7 +40,7 @@ bool aieProject2D1App::startup()
 	// Set up the physics scene
 	m_pPhysicsScene = new PhysicsScene();
 	m_pPhysicsScene->SetGravity(glm::vec2(0, -10));
-	m_pPhysicsScene->SetTimeStep(0.03f);
+	m_pPhysicsScene->SetTimeStep(0.003f);
 
 
 
@@ -52,43 +49,39 @@ bool aieProject2D1App::startup()
 
 
 
-	//
 	Sphere* ball1 = new Sphere(glm::vec2(-16, 0), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(1, 0, 0, 1));
 	Sphere* ball2 = new Sphere(glm::vec2(16, 0), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0, 1, 0, 1));
-	Sphere* ball3 = new Sphere(glm::vec2(32, 16), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0, 1, 1, 1));
-	Sphere* ball4 = new Sphere(glm::vec2(-16, 16), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0, 1, 1, 1));
-	
-	//
+	Sphere* ball3 = new Sphere(glm::vec2(32, 16), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0.75f, 0.75f, 0.75f, 1));
+	Sphere* ball4 = new Sphere(glm::vec2(-16, 16), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(1, 0.5f, 0, 1));
+
 	Box* box1 = new Box(glm::vec2(-16, 32), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(0, 0, 1, 1));
 	Box* box2 = new Box(glm::vec2(16, 32), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 1, 0, 1));
-	Box* box3 = new Box(glm::vec2(-32, 16), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 0, 1, 1));
-	Box* box4 = new Box(glm::vec2(16, 16), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 0, 1, 1));
-	
-	//
-	Plane* plane = new Plane(glm::vec2(-1, 1), 0);
+	Box* box3 = new Box(glm::vec2(-32, 16), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 0.5f, 0.76f, 1));
+	Box* box4 = new Box(glm::vec2(16, 16), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(0.5f, 0, 0.7f, 1));
 
-	//
+	Plane* plane1 = new Plane(glm::normalize(glm::vec2(-1, 10)), -30);
+	Plane* plane2 = new Plane(glm::normalize(glm::vec2(-10, 10)), -30);
+	Plane* plane3 = new Plane(glm::normalize(glm::vec2(10, 0)), -50);
+
 	m_pPhysicsScene->AddActor(ball1);
 	m_pPhysicsScene->AddActor(ball2);
 	m_pPhysicsScene->AddActor(ball3);
 	m_pPhysicsScene->AddActor(ball4);
-	
-	//
+					 
 	m_pPhysicsScene->AddActor(box1);
 	m_pPhysicsScene->AddActor(box2);
 	m_pPhysicsScene->AddActor(box3);
 	m_pPhysicsScene->AddActor(box4);
-	
-	//
-	m_pPhysicsScene->AddActor(plane);
 
-	//
+	m_pPhysicsScene->AddActor(plane1);
+	m_pPhysicsScene->AddActor(plane2);
+	m_pPhysicsScene->AddActor(plane3);
+
 	ball1->ApplyForce(glm::vec2(50, 0));
 	ball2->ApplyForce(glm::vec2(-50, 0));
 	ball3->ApplyForce(glm::vec2(0, -25));
 	ball4->ApplyForce(glm::vec2(50, 0));
-	
-	//
+
 	box1->ApplyForce(glm::vec2(50, 0));
 	box2->ApplyForce(glm::vec2(-50, 0));
 	box3->ApplyForce(glm::vec2(0, -25));
@@ -174,7 +167,7 @@ void aieProject2D1App::draw()
 	m_2dRenderer->begin();
 
 	// draw your stuff here!
-	static float aspectRatio = 16 / 9.f;
+	static float aspectRatio = 16 / 9.0f;
 	aie::Gizmos::draw2D(glm::ortho<float>(-100, 100, -100 / aspectRatio, 100 / aspectRatio, -1.0f, 1.0f));
 
 	// done drawing sprites

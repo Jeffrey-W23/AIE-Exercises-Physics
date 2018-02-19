@@ -1,15 +1,13 @@
 // #includes, using, etc
 #include "PhysicsScene.h"
+#include "PhysicsObject.h"
 #include "Rigidbody.h"
-#include <algorithm>
-#include <iostream> 
-#include <list>
-#include <iostream>
-#include "Sphere.h"
 #include "Plane.h"
+#include "Sphere.h"
 #include "Box.h"
-#include <glm\ext.hpp>
-#include <glm\glm.hpp>
+#include <algorithm>
+#include <iostream>
+#include <list>
 
 // function pointer array for doing collisions 
 typedef bool(*fn)(PhysicsObject*, PhysicsObject*);
@@ -30,7 +28,7 @@ PhysicsScene::PhysicsScene()
 	m_fTimeStep = 0.01f;
 
 	// set defualt for gravity
-	m_v2Gravity = glm::vec2(0.0f, 0.0f);
+	m_v2Gravity = glm::vec2(0, 0);
 }
 
 //--------------------------------------------------------------------------------------
@@ -52,10 +50,10 @@ PhysicsScene::~PhysicsScene()
 // Param:
 //		pActor: the object to add to the scene.
 //--------------------------------------------------------------------------------------
-void PhysicsScene::AddActor(PhysicsObject* actor)
+void PhysicsScene::AddActor(PhysicsObject* pActor)
 {
 	// Add actor to the array.
-	m_apActors.push_back(actor);
+	m_apActors.push_back(pActor);
 }
 
 //--------------------------------------------------------------------------------------
@@ -64,10 +62,10 @@ void PhysicsScene::AddActor(PhysicsObject* actor)
 // Param:
 //		pActor: the object to remove from the scene.
 //--------------------------------------------------------------------------------------
-void PhysicsScene::RemoveActor(PhysicsObject* actor)
+void PhysicsScene::RemoveActor(PhysicsObject* pActor)
 {
 	// Remove actor from thr array.
-	std::remove(std::begin(m_apActors), std::end(m_apActors), actor);
+	std::remove(std::begin(m_apActors), std::end(m_apActors), pActor);
 }
 
 //--------------------------------------------------------------------------------------
@@ -169,6 +167,49 @@ bool PhysicsScene::PlaneToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 }
 
 //--------------------------------------------------------------------------------------
+// PlaneToBox: Check a collison between a plane and a box.
+//
+// Param:
+//		obj1: Object 1 for the collison check.
+//		obj2: Object 2 for the collision check.
+// Return:
+//		bool: Return true or false for if a collision has happened.
+//--------------------------------------------------------------------------------------
+bool PhysicsScene::PlaneToBox(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	// Cast each object to either a sphere or plane.
+	Plane* pPlane = dynamic_cast<Plane*>(obj1);
+	Box* pBox = dynamic_cast<Box*>(obj2);
+
+	// if plane and box are valid
+	if (pPlane != nullptr || pBox != nullptr)
+	{
+		// Get the normal of the plane and get each point of the box
+		glm::vec2 v2Normal = pPlane->GetNormal();
+		glm::vec2 v2BottomLeft = pBox->GetMin();
+		glm::vec2 v2BottomRight = pBox->GetMin() + glm::vec2(pBox->GetWidth(), 0);
+		glm::vec2 v2TopLeft = pBox->GetMin() + glm::vec2(0, pBox->GetHeight());
+		glm::vec2 v2TopRight = pBox->GetMax();
+
+		// box crosses the plane
+		if (glm::dot(v2Normal, v2BottomLeft) - pPlane->GetDistance() < 0 ||
+			glm::dot(v2Normal, v2BottomRight) - pPlane->GetDistance() < 0 ||
+			glm::dot(v2Normal, v2TopLeft) - pPlane->GetDistance() < 0 ||
+			glm::dot(v2Normal, v2TopRight) - pPlane->GetDistance() < 0)
+		{
+			// Resolve collision between plane and box
+			pPlane->ResolveCollision(pBox);
+
+			// there was a collision return true
+			return true;
+		}
+	}
+
+	// else return false
+	return false;
+}
+
+//--------------------------------------------------------------------------------------
 // SphereToPlane: Check a collison between a sphere and a plane.
 //
 // Param:
@@ -244,53 +285,22 @@ bool PhysicsScene::SphereToSphere(PhysicsObject* obj1, PhysicsObject* obj2)
 		// if the length of the distance is less then or equal to Total radius
 		if (glm::length(v2Distance) <= fTotalRad)
 		{
+
+
+
+
+
+			pSphere1->ResolveCollision(pSphere2);
+
+
+
+
+
+
 			// Resolve collision between spheres
 			float fOverlap = glm::length(v2Distance) - fTotalRad;
 			glm::vec2 v2Overlap = glm::normalize(v2Distance) * fOverlap;
 			pSphere2->SetPosition(pSphere2->GetPosition() + v2Overlap);
-
-			// there was a collision return true
-			return true;
-		}
-	}
-
-	// else return false
-	return false;
-}
-
-//--------------------------------------------------------------------------------------
-// PlaneToBox: Check a collison between a plane and a box.
-//
-// Param:
-//		obj1: Object 1 for the collison check.
-//		obj2: Object 2 for the collision check.
-// Return:
-//		bool: Return true or false for if a collision has happened.
-//--------------------------------------------------------------------------------------
-bool PhysicsScene::PlaneToBox(PhysicsObject* obj1, PhysicsObject* obj2)
-{
-	// Cast each object to either a sphere or plane.
-	Plane* pPlane = dynamic_cast<Plane*>(obj1);
-	Box* pBox = dynamic_cast<Box*>(obj2);
-
-	// if plane and box are valid
-	if (pPlane != nullptr || pBox != nullptr)
-	{
-		// Get the normal of the plane and get each point of the box
-		glm::vec2 v2Normal = pPlane->GetNormal();
-		glm::vec2 v2BottomLeft = pBox->GetMin();
-		glm::vec2 v2BottomRight = pBox->GetMin() + glm::vec2(pBox->GetWidth(), 0);
-		glm::vec2 v2TopLeft = pBox->GetMin() + glm::vec2(0, pBox->GetHeight());
-		glm::vec2 v2TopRight = pBox->GetMax();
-
-		// box crosses the plane
-		if (glm::dot(v2Normal, v2BottomLeft) - pPlane->GetDistance() < 0 ||
-			glm::dot(v2Normal, v2BottomRight) - pPlane->GetDistance() < 0 ||
-			glm::dot(v2Normal, v2TopLeft) - pPlane->GetDistance() < 0 ||
-			glm::dot(v2Normal, v2TopRight) - pPlane->GetDistance() < 0)
-		{
-			// Resolve collision between plane and box
-			pPlane->ResolveCollision(pBox);
 
 			// there was a collision return true
 			return true;
@@ -418,7 +428,7 @@ bool PhysicsScene::BoxToBox(PhysicsObject* obj1, PhysicsObject* obj2)
 void PhysicsScene::CheckCollision()
 {
 	// new int value for the actor array size
-	int nActorCount = m_apActors.size();
+	auto nActorCount = m_apActors.size();
 
 	//need to check for collisions against all objects except this one.
 	// loop through each actor

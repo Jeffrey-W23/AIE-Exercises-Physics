@@ -6,7 +6,8 @@
 //--------------------------------------------------------------------------------------
 // Enum EShapeType. Used for actor shape type
 //--------------------------------------------------------------------------------------
-enum EShapeType {
+enum EShapeType : unsigned short int 
+{
 	ESHAPETYPE_PLANE = 0,
 	ESHAPETYPE_SPHERE,
 	ESHAPETYPE_BOX,
@@ -57,7 +58,7 @@ public:
 	//--------------------------------------------------------------------------------------
 	// EShapeType: 
 	//--------------------------------------------------------------------------------------
-	virtual EShapeType GetShapeID() { return m_eShapeID; };
+	EShapeType GetShapeID() { return m_eShapeID; }
 
 protected:
 
